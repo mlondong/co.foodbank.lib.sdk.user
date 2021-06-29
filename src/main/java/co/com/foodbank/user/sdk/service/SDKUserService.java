@@ -113,7 +113,7 @@ public class SDKUserService implements ISDKUser {
      * Method to find an User like Provider, Volunter or Beneficiary.
      */
     @Override
-    public String findUserById(String id)
+    public ProviderData findUserById(String id)
             throws JsonMappingException, JsonProcessingException,
             SDKUserServiceException, SDKUserServiceNotAvailableException,
             SDKUserServiceIllegalArgumentException {
@@ -121,9 +121,12 @@ public class SDKUserService implements ISDKUser {
         httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity<String> entity = new HttpEntity<String>(httpHeaders);
 
-        return restTemplate.exchange(getUrlProvider(id), HttpMethod.GET, entity,
-                String.class).getBody();
+        String response = restTemplate.exchange(getUrlProvider(id),
+                HttpMethod.GET, entity, String.class).getBody();
 
+
+        return objectMapper.readValue(response,
+                new TypeReference<ProviderData>() {});
     }
 
 

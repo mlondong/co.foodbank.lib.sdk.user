@@ -17,12 +17,31 @@ public interface ISDKUser {
 
 
 
-    String findUserById(String id)
+    /**
+     * @param id
+     * @return {@code ProviderData}
+     * @throws JsonMappingException
+     * @throws JsonProcessingException
+     * @throws SDKUserServiceException
+     * @throws SDKUserServiceNotAvailableException
+     * @throws SDKUserServiceIllegalArgumentException
+     */
+    ProviderData findUserById(String id)
             throws JsonMappingException, JsonProcessingException,
             SDKUserServiceException, SDKUserServiceNotAvailableException,
             SDKUserServiceIllegalArgumentException;
 
 
+    /**
+     * @param dto
+     * @param idProvider
+     * @return {@code ProviderData}
+     * @throws JsonMappingException
+     * @throws JsonProcessingException
+     * @throws SDKUserServiceException
+     * @throws SDKUserServiceNotAvailableException
+     * @throws SDKUserServiceIllegalArgumentException
+     */
     ProviderData updateVaultInProvider(ProviderDTO dto, String idProvider)
             throws JsonMappingException, JsonProcessingException,
             SDKUserServiceException, SDKUserServiceNotAvailableException,
