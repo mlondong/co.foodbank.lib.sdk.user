@@ -1,0 +1,33 @@
+package co.com.foodbank.user.sdk.service;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import co.com.foodbank.user.dto.ProviderDTO;
+import co.com.foodbank.user.sdk.exception.SDKUserServiceException;
+import co.com.foodbank.user.sdk.exception.SDKUserServiceIllegalArgumentException;
+import co.com.foodbank.user.sdk.exception.SDKUserServiceNotAvailableException;
+import co.com.foodbank.user.sdk.model.ProviderData;
+
+
+/**
+ * @author mauricio.londono@gmail.com co.com.foodbank.user.sdk.service
+ *         28/06/2021
+ */
+public interface ISDKUser {
+
+
+
+    String findUserById(String id)
+            throws JsonMappingException, JsonProcessingException,
+            SDKUserServiceException, SDKUserServiceNotAvailableException,
+            SDKUserServiceIllegalArgumentException;
+
+
+    ProviderData updateVaultInProvider(ProviderDTO dto, String idProvider)
+            throws JsonMappingException, JsonProcessingException,
+            SDKUserServiceException, SDKUserServiceNotAvailableException,
+            SDKUserServiceIllegalArgumentException;
+
+
+
+}
