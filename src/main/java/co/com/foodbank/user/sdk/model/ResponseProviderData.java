@@ -2,12 +2,12 @@ package co.com.foodbank.user.sdk.model;
 
 import java.util.Collection;
 import co.com.foodbank.address.dto.AddressDTO;
-import co.com.foodbank.vault.dto.VaultDTO;
+import co.com.foodbank.vault.dto.VaultData;
 
 /**
  * @author mauricio.londono@gmail.com co.com.foodbank.user.dto 28/06/2021
  */
-public class ProviderData {
+public class ResponseProviderData {
 
     private String id;
     private String name;
@@ -19,10 +19,10 @@ public class ProviderData {
 
     public Long cuil;
     public String legalRepresentation;
-    public Collection<VaultDTO> sucursal;
+    public Collection<VaultData> sucursal;
 
 
-    public ProviderData() {}
+    public ResponseProviderData() {}
 
 
     public void setState(boolean state) {
@@ -62,7 +62,7 @@ public class ProviderData {
         this.legalRepresentation = legalRepresentation;
     }
 
-    public void setSucursal(Collection<VaultDTO> sucursal) {
+    public void setSucursal(Collection<VaultData> sucursal) {
         this.sucursal = sucursal;
     }
 
@@ -79,7 +79,7 @@ public class ProviderData {
     }
 
 
-    public Collection<VaultDTO> getSucursal() {
+    public Collection<VaultData> getSucursal() {
         // TODO Auto-generated method stub
         return sucursal;
     }

@@ -21,7 +21,7 @@ import co.com.foodbank.user.dto.ProviderDTO;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceIllegalArgumentException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceNotAvailableException;
-import co.com.foodbank.user.sdk.model.ProviderData;
+import co.com.foodbank.user.sdk.model.ResponseProviderData;
 
 /**
  * @author mauricio.londono@gmail.com co.com.foodbank.user.sdk.service
@@ -55,7 +55,7 @@ public class SDKUserService implements ISDKUser {
      * Method to update add Vault in Provider.
      */
     @Override
-    public ProviderData updateVaultInProvider(ProviderDTO dto,
+    public ResponseProviderData updateVaultInProvider(ProviderDTO dto,
             String idProvider)
             throws JsonMappingException, JsonProcessingException,
             SDKUserServiceException, SDKUserServiceNotAvailableException,
@@ -77,7 +77,7 @@ public class SDKUserService implements ISDKUser {
                             .getBody();
 
             return objectMapper.readValue(response,
-                    new TypeReference<ProviderData>() {});
+                    new TypeReference<ResponseProviderData>() {});
 
 
 
@@ -113,7 +113,7 @@ public class SDKUserService implements ISDKUser {
      * Method to find an User like Provider, Volunter or Beneficiary.
      */
     @Override
-    public ProviderData findUserById(String id)
+    public ResponseProviderData findUserById(String id)
             throws JsonMappingException, JsonProcessingException,
             SDKUserServiceException, SDKUserServiceNotAvailableException,
             SDKUserServiceIllegalArgumentException {
@@ -126,7 +126,7 @@ public class SDKUserService implements ISDKUser {
 
 
         return objectMapper.readValue(response,
-                new TypeReference<ProviderData>() {});
+                new TypeReference<ResponseProviderData>() {});
     }
 
 

@@ -6,7 +6,7 @@ import co.com.foodbank.user.dto.ProviderDTO;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceIllegalArgumentException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceNotAvailableException;
-import co.com.foodbank.user.sdk.model.ProviderData;
+import co.com.foodbank.user.sdk.model.ResponseProviderData;
 
 
 /**
@@ -26,7 +26,7 @@ public interface ISDKUser {
      * @throws SDKUserServiceNotAvailableException
      * @throws SDKUserServiceIllegalArgumentException
      */
-    ProviderData findUserById(String id)
+    ResponseProviderData findUserById(String id)
             throws JsonMappingException, JsonProcessingException,
             SDKUserServiceException, SDKUserServiceNotAvailableException,
             SDKUserServiceIllegalArgumentException;
@@ -42,7 +42,7 @@ public interface ISDKUser {
      * @throws SDKUserServiceNotAvailableException
      * @throws SDKUserServiceIllegalArgumentException
      */
-    ProviderData updateVaultInProvider(ProviderDTO dto, String idProvider)
+    ResponseProviderData updateVaultInProvider(ProviderDTO dto, String idProvider)
             throws JsonMappingException, JsonProcessingException,
             SDKUserServiceException, SDKUserServiceNotAvailableException,
             SDKUserServiceIllegalArgumentException;
