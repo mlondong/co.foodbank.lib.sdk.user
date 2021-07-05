@@ -17,11 +17,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import co.com.foodbank.user.dto.ProviderDTO;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceIllegalArgumentException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceNotAvailableException;
 import co.com.foodbank.user.sdk.model.ResponseProviderData;
+import co.com.foodbank.vault.dto.VaultDTO;
 
 /**
  * @author mauricio.londono@gmail.com co.com.foodbank.user.sdk.service
@@ -35,27 +35,35 @@ public class SDKUserService implements ISDKUser {
     @Autowired
     private RestTemplate restTemplate;
 
-
     @Autowired
     private HttpHeaders httpHeaders;
 
     @Autowired
     private ObjectMapper objectMapper;
 
-
     @Value("${urlSdlfindUser}")
     private String urlSdlfindUser;
 
+    @Value("${urlSdlfindUserBySucursal}")
+    private String urlSdlfindUserBySucursal;
 
-    @Value("${urlSdlupdateUser}")
-    private String urlSdlupdateUser;
+    @Value("${urlSdlupdateVaultInProvider}")
+    private String urlSdlupdateVaultInProvider;
+
+
+
+    public static final int FIND_ID_PROVIDER = 2;
+
+    public static final int FIND_SUCURSAL_PROVIDER = 3;
+
+    public static final int UPDATE_VAULT_PROVIDER = 4;
 
 
     /**
-     * Method to update add Vault in Provider.
+     * Method to update Vault in Provider.
      */
     @Override
-    public ResponseProviderData updateVaultInProvider(ProviderDTO dto,
+    public ResponseProviderData updateVaultInProvider(VaultDTO dto,
             String idProvider)
             throws JsonMappingException, JsonProcessingException,
             SDKUserServiceException, SDKUserServiceNotAvailableException,
@@ -64,15 +72,15 @@ public class SDKUserService implements ISDKUser {
         try {
 
             httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-            HttpEntity<ProviderDTO> entity =
-                    new HttpEntity<ProviderDTO>(dto, httpHeaders);
+            HttpEntity<VaultDTO> entity =
+                    new HttpEntity<VaultDTO>(dto, httpHeaders);
 
 
-            // SE DEBEN CAMBIAR TODOS LOS SDK PARA QUE MANEJEN EL RESPONSEENTITY
-            // Y SE ADICIONAN LOS MODELOS PARA EVITAR DEVOLVER STRING.
             String response =
                     restTemplate
-                            .exchange(getUrlUpdateProvider(idProvider),
+                            .exchange(
+                                    getUrlProvider(idProvider,
+                                            UPDATE_VAULT_PROVIDER),
                                     HttpMethod.PUT, entity, String.class)
                             .getBody();
 
@@ -95,19 +103,7 @@ public class SDKUserService implements ISDKUser {
 
     }
 
-
-
-    /**
-     * Method to provide URL to Update a Provider.
-     * 
-     * @param idProvider
-     * @return {@code String}
-     */
-    private String getUrlUpdateProvider(String idProvider) {
-        return urlSdlupdateUser.concat(idProvider);
-    }
-
-
+    /*************************************************************************************************************************/
 
     /**
      * Method to find an User like Provider, Volunter or Beneficiary.
@@ -121,14 +117,14 @@ public class SDKUserService implements ISDKUser {
         httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity<String> entity = new HttpEntity<String>(httpHeaders);
 
-        String response = restTemplate.exchange(getUrlProvider(id),
-                HttpMethod.GET, entity, String.class).getBody();
+        String response =
+                restTemplate.exchange(getUrlProvider(id, FIND_ID_PROVIDER),
+                        HttpMethod.GET, entity, String.class).getBody();
 
 
         return objectMapper.readValue(response,
                 new TypeReference<ResponseProviderData>() {});
     }
-
 
 
     /**
@@ -137,8 +133,48 @@ public class SDKUserService implements ISDKUser {
      * @param id
      * @return {@code String}
      */
-    private String getUrlProvider(String id) {
-        return urlSdlfindUser.concat(id);
+    private String getUrlProvider(String id, int option) {
+
+        String url = null;
+
+        switch (option) {
+            case 4:
+                url = urlSdlupdateVaultInProvider.concat(id);
+                break;
+            case 2:
+                url = urlSdlfindUser.concat(id);
+                break;
+            case 3:
+                url = urlSdlfindUserBySucursal.concat(id);
+                break;
+            default:
+                break;
+        }
+        return url;
+    }
+
+    /*************************************************************************************************************************/
+
+    /**
+     * Method to find an User by Sucursal like Provider.
+     */
+    @Override
+    public ResponseProviderData findProviderBySucursal(String id)
+            throws JsonMappingException, JsonProcessingException,
+            SDKUserServiceException, SDKUserServiceNotAvailableException,
+            SDKUserServiceIllegalArgumentException {
+
+        httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        HttpEntity<String> entity = new HttpEntity<String>(httpHeaders);
+
+        String response = restTemplate
+                .exchange(getUrlProvider(id, FIND_SUCURSAL_PROVIDER),
+                        HttpMethod.GET, entity, String.class)
+                .getBody();
+
+
+        return objectMapper.readValue(response,
+                new TypeReference<ResponseProviderData>() {});
     }
 
 
