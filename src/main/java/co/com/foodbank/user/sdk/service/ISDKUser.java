@@ -2,6 +2,7 @@ package co.com.foodbank.user.sdk.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import co.com.foodbank.contribution.dto.ContributionData;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceIllegalArgumentException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceNotAvailableException;
@@ -14,6 +15,25 @@ import co.com.foodbank.vault.dto.VaultDTO;
  *         28/06/2021
  */
 public interface ISDKUser {
+
+
+
+    /**
+     * Method to update contributions in provider
+     * 
+     * @param idProvider
+     * @return {@code ResponseProviderData}
+     * @throws JsonMappingException
+     * @throws JsonProcessingException
+     * @throws SDKUserServiceException
+     * @throws SDKUserServiceNotAvailableException
+     * @throws SDKUserServiceIllegalArgumentException
+     */
+    ResponseProviderData updateContribution(ContributionData contribution,
+            String idVault)
+            throws JsonMappingException, JsonProcessingException,
+            SDKUserServiceException, SDKUserServiceNotAvailableException,
+            SDKUserServiceIllegalArgumentException;;
 
 
 

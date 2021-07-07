@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import co.com.foodbank.contribution.dto.ContributionData;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceIllegalArgumentException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceNotAvailableException;
@@ -50,6 +51,9 @@ public class SDKUserService implements ISDKUser {
     @Value("${urlSdlupdateVaultInProvider}")
     private String urlSdlupdateVaultInProvider;
 
+    @Value("${urlSdlupdateContribution}")
+    private String urlSdlupdateContribution;
+
 
 
     public static final int FIND_ID_PROVIDER = 2;
@@ -57,6 +61,9 @@ public class SDKUserService implements ISDKUser {
     public static final int FIND_SUCURSAL_PROVIDER = 3;
 
     public static final int UPDATE_VAULT_PROVIDER = 4;
+
+    public static final int UPDATE_CONTRIBUTION_PROVIDER = 5;
+
 
 
     /**
@@ -138,15 +145,18 @@ public class SDKUserService implements ISDKUser {
         String url = null;
 
         switch (option) {
-            case 4:
-                url = urlSdlupdateVaultInProvider.concat(id);
-                break;
             case 2:
                 url = urlSdlfindUser.concat(id);
                 break;
             case 3:
                 url = urlSdlfindUserBySucursal.concat(id);
                 break;
+            case 4:
+                url = urlSdlupdateVaultInProvider.concat(id);
+                break;
+            case 5:
+                url = urlSdlupdateContribution.concat(id);
+
             default:
                 break;
         }
@@ -175,6 +185,47 @@ public class SDKUserService implements ISDKUser {
 
         return objectMapper.readValue(response,
                 new TypeReference<ResponseProviderData>() {});
+    }
+
+
+
+    /**
+     * Method to update contributions in provider.
+     */
+    @Override
+    public ResponseProviderData updateContribution(
+            ContributionData contribution, String idVault)
+            throws JsonMappingException, JsonProcessingException,
+            SDKUserServiceException, SDKUserServiceNotAvailableException,
+            SDKUserServiceIllegalArgumentException {
+
+        try {
+
+            httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+            HttpEntity<ContributionData> entity =
+                    new HttpEntity<ContributionData>(contribution, httpHeaders);
+
+            String response =
+                    restTemplate
+                            .exchange(
+                                    getUrlProvider(idVault,
+                                            UPDATE_CONTRIBUTION_PROVIDER),
+                                    HttpMethod.PUT, entity, String.class)
+                            .getBody();
+
+            return objectMapper.readValue(response,
+                    new TypeReference<ResponseProviderData>() {});
+
+        } catch (ResourceAccessException e) {
+            throw new SDKUserServiceNotAvailableException(e);
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.BAD_REQUEST) {
+                throw new SDKUserServiceIllegalArgumentException(e);
+            }
+            throw new SDKUserServiceException(e);
+        } catch (Exception e) {
+            throw new SDKUserServiceException(e);
+        }
     }
 
 
