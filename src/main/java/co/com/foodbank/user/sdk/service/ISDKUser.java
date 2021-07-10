@@ -2,7 +2,7 @@ package co.com.foodbank.user.sdk.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import co.com.foodbank.contribution.dto.ContributionData;
+import co.com.foodbank.contribution.state.ContributionData;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceIllegalArgumentException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceNotAvailableException;
