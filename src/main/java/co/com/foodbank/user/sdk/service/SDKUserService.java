@@ -26,7 +26,6 @@ import co.com.foodbank.user.sdk.exception.SDKUserServiceNotAvailableException;
 import co.com.foodbank.user.sdk.model.ResponseProviderData;
 import co.com.foodbank.user.sdk.model.ResponseUserData;
 import co.com.foodbank.user.sdk.model.ResponseVolunteerData;
-import co.com.foodbank.user.sdk.util.SDKUserParameters;
 import co.com.foodbank.user.sdk.util.UrlUser;
 import co.com.foodbank.vault.dto.VaultDTO;
 
@@ -49,7 +48,8 @@ public class SDKUserService implements ISDKUser {
     @Autowired
     private ObjectMapper objectMapper;
 
-
+    @Autowired
+    private UrlUser urlUser;
 
     /**
      * Method to update Vault in Provider.
@@ -67,9 +67,10 @@ public class SDKUserService implements ISDKUser {
             HttpEntity<VaultDTO> entity =
                     new HttpEntity<VaultDTO>(dto, httpHeaders);
 
-            String response = restTemplate.exchange(
-                    getUrl(idProvider, SDKUserParameters.UPDATE_VAULT_PROVIDER),
-                    HttpMethod.PUT, entity, String.class).getBody();
+            String response = restTemplate
+                    .exchange(urlUser.toUpdateVaultInProvider(idProvider),
+                            HttpMethod.PUT, entity, String.class)
+                    .getBody();
 
             return objectMapper.readValue(response,
                     new TypeReference<ResponseProviderData>() {});
@@ -106,13 +107,8 @@ public class SDKUserService implements ISDKUser {
             httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
             HttpEntity<String> entity = new HttpEntity<String>(httpHeaders);
 
-            String response =
-                    restTemplate
-                            .exchange(
-                                    getUrl(id,
-                                            SDKUserParameters.FIND_ID_PROVIDER),
-                                    HttpMethod.GET, entity, String.class)
-                            .getBody();
+            String response = restTemplate.exchange(urlUser.toUserById(id),
+                    HttpMethod.GET, entity, String.class).getBody();
 
 
             return objectMapper.readValue(response,
@@ -151,9 +147,11 @@ public class SDKUserService implements ISDKUser {
             httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
             HttpEntity<String> entity = new HttpEntity<String>(httpHeaders);
 
-            String response = restTemplate.exchange(
-                    getUrl(id, SDKUserParameters.FIND_SUCURSAL_PROVIDER),
-                    HttpMethod.GET, entity, String.class).getBody();
+            String response =
+                    restTemplate
+                            .exchange(urlUser.toUserBySucursal(id),
+                                    HttpMethod.GET, entity, String.class)
+                            .getBody();
 
 
             return objectMapper.readValue(response,
@@ -195,10 +193,11 @@ public class SDKUserService implements ISDKUser {
             HttpEntity<ContributionData> entity =
                     new HttpEntity<ContributionData>(contribution, httpHeaders);
 
-            String response = restTemplate.exchange(
-                    getUrl(idVault,
-                            SDKUserParameters.UPDATE_CONTRIBUTION_PROVIDER),
-                    HttpMethod.PUT, entity, String.class).getBody();
+            String response =
+                    restTemplate
+                            .exchange(urlUser.toUpdateContribution(idVault),
+                                    HttpMethod.PUT, entity, String.class)
+                            .getBody();
 
             return objectMapper.readValue(response,
                     new TypeReference<ResponseProviderData>() {});
@@ -229,12 +228,11 @@ public class SDKUserService implements ISDKUser {
             httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
             HttpEntity<String> entity = new HttpEntity<String>(httpHeaders);
 
-            String response =
-                    restTemplate
-                            .exchange(getUrl(data.getId(), data.getDni()),
-                                    HttpMethod.GET, entity, String.class)
-                            .getBody();
 
+            String response = restTemplate
+                    .exchange(urlUser.toVolunteer(data.getId(), data.getDni()),
+                            HttpMethod.GET, entity, String.class)
+                    .getBody();
 
             return objectMapper.readValue(response,
                     new TypeReference<ResponseVolunteerData>() {});
@@ -277,7 +275,7 @@ public class SDKUserService implements ISDKUser {
 
             String response =
                     restTemplate
-                            .exchange(getUrl(name, email, phones),
+                            .exchange(urlUser.toUser(name, email, phones),
                                     HttpMethod.GET, entity, String.class)
                             .getBody();
 
@@ -304,16 +302,5 @@ public class SDKUserService implements ISDKUser {
 
     }
 
-    private String getUrl(String parameter, int option) {
-        return new UrlUser().url(parameter, option);
-    }
-
-    private String getUrl(String id, String dni) {
-        return new UrlUser().toVolunteer(id, dni);
-    }
-
-    private String getUrl(String name, String email, String phones) {
-        return new UrlUser().toUser(name, email, phones);
-    }
 
 }
