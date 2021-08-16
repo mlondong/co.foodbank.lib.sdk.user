@@ -6,17 +6,28 @@ public final class SDKUserParameters {
 
     public static final int FIND_SUCURSAL_PROVIDER = 3;
 
+    public static final int FIND_BY_USER = 6;
+
+    public static final int FIND_BY_VOLUNTEER = 7;
+
+
     public static final int UPDATE_VAULT_PROVIDER = 4;
 
     public static final int UPDATE_CONTRIBUTION_PROVIDER = 5;
 
-    public static final int UPDATE_BY_USER = 6;
+
 
     public static final String PARAMETER_NAME = "/name/";
 
     public static final String PARAMETER_EMAIL = "/email/";
 
     public static final String PARAMETER_PHONE = "/phone/";
+
+    public static final String PARAMETER_DNI = "dni=";
+
+    public static final String PARAMETER_ID = "id=";
+
+    public static final String PARAMETER_AMP = "&";
 
 
 

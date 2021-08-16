@@ -3,12 +3,14 @@ package co.com.foodbank.user.sdk.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import co.com.foodbank.contribution.state.ContributionData;
+import co.com.foodbank.user.dto.request.RequestVolunterData;
 import co.com.foodbank.user.sdk.exception.SDKUserNotFoundException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceIllegalArgumentException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceNotAvailableException;
 import co.com.foodbank.user.sdk.model.ResponseProviderData;
 import co.com.foodbank.user.sdk.model.ResponseUserData;
+import co.com.foodbank.user.sdk.model.ResponseVolunteerData;
 import co.com.foodbank.vault.dto.VaultDTO;
 
 
@@ -17,6 +19,25 @@ import co.com.foodbank.vault.dto.VaultDTO;
  *         28/06/2021
  */
 public interface ISDKUser {
+
+
+
+    /**
+     * Method to find Volunteer.
+     * 
+     * @param data
+     * @return {@code ResponseVolunteerData}
+     * @throws JsonMappingException
+     * @throws JsonProcessingException
+     * @throws SDKUserServiceException
+     * @throws SDKUserServiceNotAvailableException
+     * @throws SDKUserServiceIllegalArgumentException
+     */
+    ResponseVolunteerData findVolunteer(RequestVolunterData data)
+            throws JsonMappingException, JsonProcessingException,
+            SDKUserServiceException, SDKUserServiceNotAvailableException,
+            SDKUserServiceIllegalArgumentException, SDKUserNotFoundException;
+
 
 
     /**
