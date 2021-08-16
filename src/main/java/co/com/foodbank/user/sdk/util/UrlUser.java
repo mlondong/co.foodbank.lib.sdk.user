@@ -1,13 +1,24 @@
 package co.com.foodbank.user.sdk.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import org.springframework.beans.factory.annotation.Value;
-import lombok.Data;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * @author mauricio.londono@gmail.com co.com.foodbank.user.sdk.util 12/08/2021
  */
-@Data
-public final class UrlUser {
+@Component
+@Validated
+public class UrlUser {
+
+    @Value("${sdk.service.user.scheme}")
+    private String urlScheme;
+
+    @Value("${sdk.service.user.url}")
+    private String urlBase;
 
     @Value("${urlSdlfindUserById}")
     private String urlSdlfindUserById;
@@ -25,63 +36,116 @@ public final class UrlUser {
     private String urlSdlfindUser;
 
     @Value("${urlSdlfindVolunteer}")
-    private String urlSdlfindVolunteer;
+    public String urlSdlfindVolunteer;
 
-    private String url;
 
 
     /**
-     * Method to build URL in case to search a User by id.
+     * Method to get URL for find User by id.
      * 
      * @param id
      * @return {@code String}
      */
-    public String url(String id, int option) {
 
-        String url = null;
-
-        switch (option) {
-            case 2:
-                url = urlSdlfindUserById.concat(id);
-                break;
-            case 3:
-                url = urlSdlfindUserBySucursal.concat(id);
-                break;
-            case 4:
-                url = urlSdlupdateVaultInProvider.concat(id);
-                break;
-            case 5:
-                url = urlSdlupdateContribution.concat(id);
-                break;
-            case 6:
-                url = urlSdlfindUser;
-                break;
-            case 7:
-                url = urlSdlfindVolunteer;
-                break;
-
-            default:
-                break;
-        }
-        return url;
+    public String toUserById(String id) {
+        return UriComponentsBuilder.newInstance().scheme(urlScheme)
+                .host(urlBase).path(urlSdlfindUserById)
+                .buildAndExpand(encode(id)).toString();
     }
 
 
+    /**
+     * Method to get URL for find User by sucursal.
+     * 
+     * @param id
+     * @return {@code String}
+     */
+
+    public String toUserBySucursal(String id) {
+        return UriComponentsBuilder.newInstance().scheme(urlScheme)
+                .host(urlBase).path(urlSdlfindUserBySucursal)
+                .buildAndExpand(encode(id)).toString();
+    }
+
+
+    /**
+     * Method to get URL for Update Vault in Provider.
+     * 
+     * @param id
+     * @return {@code String}
+     */
+    public String toUpdateVaultInProvider(String id) {
+        return UriComponentsBuilder.newInstance().scheme(urlScheme)
+                .host(urlBase).path(urlSdlupdateVaultInProvider)
+                .buildAndExpand(encode(id)).toString();
+    }
+
+
+
+    /**
+     * Method to get URL for Update Contribution in Provider.
+     * 
+     * @param id
+     * @return {@code String}
+     */
+    public String toUpdateContribution(String id) {
+        return UriComponentsBuilder.newInstance().scheme(urlScheme)
+                .host(urlBase).path(urlSdlupdateContribution)
+                .buildAndExpand(encode(id)).toString();
+    }
+
+
+    /**
+     * Method to get URL for User.
+     * 
+     * @param name
+     * @param email
+     * @param phones
+     * @return {@code String }
+     */
     public String toUser(String name, String email, String phones) {
-        return url = url(null, SDKUserParameters.FIND_BY_USER)
-                + SDKUserParameters.PARAMETER_NAME + name
-                + SDKUserParameters.PARAMETER_EMAIL + email
+        return UriComponentsBuilder.newInstance().scheme(urlScheme)
+                .host(urlBase).path(getPathUser(name, email, phones)).build()
+                .toString();
+    }
+
+    /**
+     * Method to get URL for Volunteer.
+     * 
+     * @param id
+     * @param dni
+     * @return {@code}
+     */
+    public String toVolunteer(String id, String dni) {
+        return UriComponentsBuilder.newInstance().scheme(urlScheme)
+                .host(urlBase).path(getPathVolunter(id, dni)).build()
+                .toString();
+    }
+
+
+    private String getPathVolunter(String id, String dni) {
+        return urlSdlfindVolunteer + SDKUserParameters.PARAMETER_ID + encode(id)
+                + SDKUserParameters.PARAMETER_AMP
+                + SDKUserParameters.PARAMETER_DNI + encode(dni);
+    }
+
+    private String getPathUser(String name, String email, String phones) {
+        return urlSdlfindUser + SDKUserParameters.PARAMETER_NAME + name
+                + SDKUserParameters.PARAMETER_EMAIL + encode(email)
                 + SDKUserParameters.PARAMETER_PHONE + phones;
     }
 
-
-    public String toVolunteer(String id, String dni) {
-        return url = url(null, SDKUserParameters.FIND_BY_VOLUNTEER)
-                + SDKUserParameters.PARAMETER_ID + id
-                + SDKUserParameters.PARAMETER_AMP
-                + SDKUserParameters.PARAMETER_DNI + dni;
+    /**
+     * Method for encode
+     * 
+     * @param value url
+     * @return utf8 encoded url
+     */
+    private String encode(String value) {
+        try {
+            return URLEncoder.encode(value, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return "";
+        }
     }
-
-
-
 }
