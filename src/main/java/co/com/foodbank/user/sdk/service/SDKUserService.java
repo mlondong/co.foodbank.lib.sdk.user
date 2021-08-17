@@ -23,6 +23,7 @@ import co.com.foodbank.user.sdk.exception.SDKUserNotFoundException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceIllegalArgumentException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceNotAvailableException;
+import co.com.foodbank.user.sdk.model.ResponseBeneficiaryData;
 import co.com.foodbank.user.sdk.model.ResponseProviderData;
 import co.com.foodbank.user.sdk.model.ResponseUserData;
 import co.com.foodbank.user.sdk.model.ResponseVolunteerData;
@@ -96,10 +97,10 @@ public class SDKUserService implements ISDKUser {
     /*************************************************************************************************************************/
 
     /**
-     * Method to find an User like Provider, Volunteer or Beneficiary.
+     * Method to find an Provider.
      */
     @Override
-    public ResponseProviderData findUserById(String id)
+    public ResponseProviderData findProviderById(String id)
             throws JsonMappingException, JsonProcessingException,
             SDKUserServiceException, SDKUserServiceNotAvailableException,
             SDKUserServiceIllegalArgumentException, SDKUserNotFoundException {
@@ -131,6 +132,83 @@ public class SDKUserService implements ISDKUser {
         }
     }
 
+    /*************************************************************************************************************************/
+
+    /**
+     * Method to find an User in general.
+     */
+
+    @Override
+    public ResponseUserData findUserById(String id)
+            throws JsonMappingException, JsonProcessingException,
+            SDKUserServiceException, SDKUserServiceNotAvailableException,
+            SDKUserServiceIllegalArgumentException, SDKUserNotFoundException {
+        try {
+            httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+            HttpEntity<String> entity = new HttpEntity<String>(httpHeaders);
+
+            String response = restTemplate.exchange(urlUser.toUserById(id),
+                    HttpMethod.GET, entity, String.class).getBody();
+
+
+            return objectMapper.readValue(response,
+                    new TypeReference<ResponseUserData>() {});
+
+        } catch (HttpClientErrorException i) {
+
+            if (i.getStatusCode() == HttpStatus.BAD_REQUEST) {
+                throw new SDKUserServiceIllegalArgumentException(i);
+            }
+            if (i.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new SDKUserNotFoundException(id,
+                        i.getResponseBodyAsString());
+            }
+            throw new SDKUserServiceException(i);
+        } catch (ResourceAccessException i) {
+            throw new SDKUserServiceNotAvailableException(i);
+        } catch (Exception i) {
+            throw new SDKUserServiceException(i);
+        }
+    }
+
+
+    /*************************************************************************************************************************/
+    /**
+     * Method to find an Beneficiary.
+     */
+
+    @Override
+    public ResponseBeneficiaryData findBeneficiaryById(String id)
+            throws JsonMappingException, JsonProcessingException,
+            SDKUserServiceException, SDKUserServiceNotAvailableException,
+            SDKUserServiceIllegalArgumentException, SDKUserNotFoundException {
+        try {
+            httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+            HttpEntity<String> entity = new HttpEntity<String>(httpHeaders);
+
+            String response = restTemplate.exchange(urlUser.toUserById(id),
+                    HttpMethod.GET, entity, String.class).getBody();
+
+
+            return objectMapper.readValue(response,
+                    new TypeReference<ResponseBeneficiaryData>() {});
+
+        } catch (HttpClientErrorException i) {
+
+            if (i.getStatusCode() == HttpStatus.BAD_REQUEST) {
+                throw new SDKUserServiceIllegalArgumentException(i);
+            }
+            if (i.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new SDKUserNotFoundException(id,
+                        i.getResponseBodyAsString());
+            }
+            throw new SDKUserServiceException(i);
+        } catch (ResourceAccessException i) {
+            throw new SDKUserServiceNotAvailableException(i);
+        } catch (Exception i) {
+            throw new SDKUserServiceException(i);
+        }
+    }
 
 
     /*************************************************************************************************************************/
@@ -139,7 +217,7 @@ public class SDKUserService implements ISDKUser {
      * Method to find an User by Sucursal like Provider.
      */
     @Override
-    public ResponseProviderData findProviderBySucursal(String id)
+    public ResponseProviderData findProviderBySucursal(String idVault)
             throws JsonMappingException, JsonProcessingException,
             SDKUserServiceException, SDKUserServiceNotAvailableException,
             SDKUserServiceIllegalArgumentException, SDKUserNotFoundException {
@@ -149,7 +227,7 @@ public class SDKUserService implements ISDKUser {
 
             String response =
                     restTemplate
-                            .exchange(urlUser.toUserBySucursal(id),
+                            .exchange(urlUser.toUserBySucursal(idVault),
                                     HttpMethod.GET, entity, String.class)
                             .getBody();
 
@@ -163,7 +241,7 @@ public class SDKUserService implements ISDKUser {
                 throw new SDKUserServiceIllegalArgumentException(i);
             }
             if (i.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new SDKUserNotFoundException(id,
+                throw new SDKUserNotFoundException(idVault,
                         i.getResponseBodyAsString());
             }
             throw new SDKUserServiceException(i);
@@ -301,6 +379,7 @@ public class SDKUserService implements ISDKUser {
         }
 
     }
+
 
 
 }

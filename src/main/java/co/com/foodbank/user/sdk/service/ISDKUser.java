@@ -8,6 +8,7 @@ import co.com.foodbank.user.sdk.exception.SDKUserNotFoundException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceIllegalArgumentException;
 import co.com.foodbank.user.sdk.exception.SDKUserServiceNotAvailableException;
+import co.com.foodbank.user.sdk.model.ResponseBeneficiaryData;
 import co.com.foodbank.user.sdk.model.ResponseProviderData;
 import co.com.foodbank.user.sdk.model.ResponseUserData;
 import co.com.foodbank.user.sdk.model.ResponseVolunteerData;
@@ -19,6 +20,62 @@ import co.com.foodbank.vault.dto.VaultDTO;
  *         28/06/2021
  */
 public interface ISDKUser {
+
+
+
+    /**
+     * Method to find a Beneficiary.
+     * 
+     * @param id
+     * @return {@code ResponseBeneficiaryData}
+     * @throws JsonMappingException
+     * @throws JsonProcessingException
+     * @throws SDKUserServiceException
+     * @throws SDKUserServiceNotAvailableException
+     * @throws SDKUserServiceIllegalArgumentException
+     * @throws SDKUserNotFoundException
+     */
+    ResponseBeneficiaryData findBeneficiaryById(String id)
+            throws JsonMappingException, JsonProcessingException,
+            SDKUserServiceException, SDKUserServiceNotAvailableException,
+            SDKUserServiceIllegalArgumentException, SDKUserNotFoundException;
+
+
+
+    /**
+     * Method to find Provider
+     * 
+     * @param id
+     * @return {@code ResponseProviderData}
+     * @throws JsonMappingException
+     * @throws JsonProcessingException
+     * @throws SDKUserServiceException
+     * @throws SDKUserServiceNotAvailableException
+     * @throws SDKUserServiceIllegalArgumentException
+     */
+    ResponseProviderData findProviderById(String id)
+            throws JsonMappingException, JsonProcessingException,
+            SDKUserServiceException, SDKUserServiceNotAvailableException,
+            SDKUserServiceIllegalArgumentException, SDKUserNotFoundException;
+
+
+
+    /**
+     * Method to find User in general
+     * 
+     * @param id
+     * @return {@codeResponseUserData}
+     * @throws JsonMappingException
+     * @throws JsonProcessingException
+     * @throws SDKUserServiceException
+     * @throws SDKUserServiceNotAvailableException
+     * @throws SDKUserServiceIllegalArgumentException
+     * @throws SDKUserNotFoundException
+     */
+    ResponseUserData findUserById(String id)
+            throws JsonMappingException, JsonProcessingException,
+            SDKUserServiceException, SDKUserServiceNotAvailableException,
+            SDKUserServiceIllegalArgumentException, SDKUserNotFoundException;
 
 
 
@@ -41,7 +98,7 @@ public interface ISDKUser {
 
 
     /**
-     * Method to find user by multiples parameters.
+     * Method to find user by parameters.
      * 
      * @param id
      * @return {@code ResponseUserData}
@@ -78,23 +135,6 @@ public interface ISDKUser {
 
 
     /**
-     * Method to find Provider
-     * 
-     * @param id
-     * @return {@code ResponseProviderData}
-     * @throws JsonMappingException
-     * @throws JsonProcessingException
-     * @throws SDKUserServiceException
-     * @throws SDKUserServiceNotAvailableException
-     * @throws SDKUserServiceIllegalArgumentException
-     */
-    ResponseProviderData findUserById(String id)
-            throws JsonMappingException, JsonProcessingException,
-            SDKUserServiceException, SDKUserServiceNotAvailableException,
-            SDKUserServiceIllegalArgumentException, SDKUserNotFoundException;
-
-
-    /**
      * Method to update vault in provider.
      * 
      * @param dto
@@ -114,7 +154,7 @@ public interface ISDKUser {
 
 
     /**
-     * Method to find a provider by sucursal.
+     * Method to find a provider by sucursal id.
      * 
      * @param id
      * @return {@code ResponseProviderData}
@@ -124,7 +164,7 @@ public interface ISDKUser {
      * @throws SDKUserServiceNotAvailableException
      * @throws SDKUserServiceIllegalArgumentException
      */
-    ResponseProviderData findProviderBySucursal(String id)
+    ResponseProviderData findProviderBySucursal(String idVault)
             throws JsonMappingException, JsonProcessingException,
             SDKUserServiceException, SDKUserServiceNotAvailableException,
             SDKUserServiceIllegalArgumentException, SDKUserNotFoundException;

@@ -21,7 +21,7 @@ public class ResponseVolunteerData {
     private String email;
     private String password;
     private String phones;
-    private boolean state = false;
+    private boolean state;
     private AddressDTO address;
 
     public Long dni;
