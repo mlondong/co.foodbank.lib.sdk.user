@@ -49,7 +49,7 @@ public class UrlUser {
 
     public String toUserById(String id) {
         return UriComponentsBuilder.newInstance().scheme(urlScheme)
-                .host(urlBase).path(urlSdlfindUserById)
+                .host(urlBase).path(urlSdlfindUserById + id)
                 .buildAndExpand(encode(id)).toString();
     }
 
