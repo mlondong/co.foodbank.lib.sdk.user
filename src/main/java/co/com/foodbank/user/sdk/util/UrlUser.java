@@ -49,7 +49,7 @@ public class UrlUser {
 
     public String toUserById(String id) {
         return UriComponentsBuilder.newInstance().scheme(urlScheme)
-                .host(urlBase).path(urlSdlfindUserById)
+                .host(urlBase).path(urlSdlfindUserById + id)
                 .buildAndExpand(encode(id)).toString();
     }
 
@@ -63,7 +63,7 @@ public class UrlUser {
 
     public String toUserBySucursal(String id) {
         return UriComponentsBuilder.newInstance().scheme(urlScheme)
-                .host(urlBase).path(urlSdlfindUserBySucursal)
+                .host(urlBase).path(urlSdlfindUserBySucursal + id)
                 .buildAndExpand(encode(id)).toString();
     }
 
@@ -76,7 +76,7 @@ public class UrlUser {
      */
     public String toUpdateVaultInProvider(String id) {
         return UriComponentsBuilder.newInstance().scheme(urlScheme)
-                .host(urlBase).path(urlSdlupdateVaultInProvider)
+                .host(urlBase).path(urlSdlupdateVaultInProvider + id)
                 .buildAndExpand(encode(id)).toString();
     }
 
@@ -90,7 +90,7 @@ public class UrlUser {
      */
     public String toUpdateContribution(String id) {
         return UriComponentsBuilder.newInstance().scheme(urlScheme)
-                .host(urlBase).path(urlSdlupdateContribution)
+                .host(urlBase).path(urlSdlupdateContribution + id)
                 .buildAndExpand(encode(id)).toString();
     }
 
