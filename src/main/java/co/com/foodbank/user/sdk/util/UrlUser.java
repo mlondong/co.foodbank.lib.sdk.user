@@ -20,25 +20,6 @@ public class UrlUser {
     @Value("${sdk.service.user.url}")
     private String urlBase;
 
-    @Value("${urlSdlfindUserById}")
-    private String urlSdlfindUserById;
-
-    @Value("${urlSdlfindUserBySucursal}")
-    private String urlSdlfindUserBySucursal;
-
-    @Value("${urlSdlupdateVaultInProvider}")
-    private String urlSdlupdateVaultInProvider;
-
-    @Value("${urlSdlupdateContribution}")
-    private String urlSdlupdateContribution;
-
-    @Value("${urlSdlfindUser}")
-    private String urlSdlfindUser;
-
-    @Value("${urlSdlfindVolunteer}")
-    public String urlSdlfindVolunteer;
-
-
 
     /**
      * Method to get URL for find User by id.
@@ -49,7 +30,7 @@ public class UrlUser {
 
     public String toUserById(String id) {
         return UriComponentsBuilder.newInstance().scheme(urlScheme)
-                .host(urlBase).path(urlSdlfindUserById + id)
+                .host(urlBase).path(SDKUserParameters.PATH_FIND_BYID + id)
                 .buildAndExpand(encode(id)).toString();
     }
 
@@ -63,7 +44,7 @@ public class UrlUser {
 
     public String toUserBySucursal(String id) {
         return UriComponentsBuilder.newInstance().scheme(urlScheme)
-                .host(urlBase).path(urlSdlfindUserBySucursal + id)
+                .host(urlBase).path(SDKUserParameters.PATH_FIND_BYSUCURSAL + id)
                 .buildAndExpand(encode(id)).toString();
     }
 
@@ -76,7 +57,8 @@ public class UrlUser {
      */
     public String toUpdateVaultInProvider(String id) {
         return UriComponentsBuilder.newInstance().scheme(urlScheme)
-                .host(urlBase).path(urlSdlupdateVaultInProvider + id)
+                .host(urlBase)
+                .path(SDKUserParameters.PATH_UPDATE_VAULT_PROV + id)
                 .buildAndExpand(encode(id)).toString();
     }
 
@@ -125,21 +107,24 @@ public class UrlUser {
 
 
     private String getPathVolunter(String id, String dni) {
-        return urlSdlfindVolunteer + SDKUserParameters.PARAMETER_ID + encode(id)
+        return SDKUserParameters.PATH_FIND_VOLUNTEER
+                + SDKUserParameters.PARAMETER_ID + encode(id)
                 + SDKUserParameters.PARAMETER_AMP
                 + SDKUserParameters.PARAMETER_DNI + encode(dni);
     }
 
     private String getPathUser(String name, String email, String phones) {
-        return urlSdlfindUser + SDKUserParameters.PARAMETER_NAME + name
+        return SDKUserParameters.PATH_FIND_BY_USER
+                + SDKUserParameters.PARAMETER_NAME + name
                 + SDKUserParameters.PARAMETER_EMAIL + encode(email)
                 + SDKUserParameters.PARAMETER_PHONE + phones;
     }
 
 
     private String getPathContribution(String idVault, String idContribution) {
-        return urlSdlupdateContribution + SDKUserParameters.PARAMETER_VAULT
-                + encode(idVault) + SDKUserParameters.PARAMETER_CONTRIBUTION
+        return SDKUserParameters.PATH_UPDATE_CONTRIBUTION
+                + SDKUserParameters.PARAMETER_VAULT + encode(idVault)
+                + SDKUserParameters.PARAMETER_CONTRIBUTION
                 + encode(idContribution);
     }
 
