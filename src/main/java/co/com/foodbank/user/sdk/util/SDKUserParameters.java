@@ -30,6 +30,10 @@ public final class SDKUserParameters {
     public static final String PARAMETER_AMP = "&";
 
 
+    public static final String PARAMETER_VAULT = "/vault/";
+    public static final String PARAMETER_CONTRIBUTION = "/contribution/";
+
+
 
     public SDKUserParameters() {}
 }

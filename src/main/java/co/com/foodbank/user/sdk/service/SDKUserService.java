@@ -260,7 +260,8 @@ public class SDKUserService implements ISDKUser {
      */
     @Override
     public ResponseProviderData updateContribution(
-            ContributionData contribution, String idVault)
+            ContributionData contribution, String idVault,
+            String idContribution)
             throws JsonMappingException, JsonProcessingException,
             SDKUserServiceException, SDKUserServiceNotAvailableException,
             SDKUserServiceIllegalArgumentException {
@@ -271,11 +272,9 @@ public class SDKUserService implements ISDKUser {
             HttpEntity<ContributionData> entity =
                     new HttpEntity<ContributionData>(contribution, httpHeaders);
 
-            String response =
-                    restTemplate
-                            .exchange(urlUser.toUpdateContribution(idVault),
-                                    HttpMethod.PUT, entity, String.class)
-                            .getBody();
+            String response = restTemplate.exchange(
+                    urlUser.toUpdateContribution(idVault, idContribution),
+                    HttpMethod.PUT, entity, String.class).getBody();
 
             return objectMapper.readValue(response,
                     new TypeReference<ResponseProviderData>() {});

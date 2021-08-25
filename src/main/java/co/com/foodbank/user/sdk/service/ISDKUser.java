@@ -127,7 +127,7 @@ public interface ISDKUser {
      * @throws SDKUserServiceIllegalArgumentException
      */
     ResponseProviderData updateContribution(ContributionData contribution,
-            String idVault)
+            String idVault, String idContribution)
             throws JsonMappingException, JsonProcessingException,
             SDKUserServiceException, SDKUserServiceNotAvailableException,
             SDKUserServiceIllegalArgumentException;;

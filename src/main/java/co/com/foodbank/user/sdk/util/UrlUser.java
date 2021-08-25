@@ -88,10 +88,11 @@ public class UrlUser {
      * @param id
      * @return {@code String}
      */
-    public String toUpdateContribution(String id) {
+    public String toUpdateContribution(String idVault, String idContribution) {
         return UriComponentsBuilder.newInstance().scheme(urlScheme)
-                .host(urlBase).path(urlSdlupdateContribution + id)
-                .buildAndExpand(encode(id)).toString();
+                .host(urlBase)
+                .path(getPathContribution(idVault, idContribution)).build()
+                .toString();
     }
 
 
@@ -134,6 +135,14 @@ public class UrlUser {
                 + SDKUserParameters.PARAMETER_EMAIL + encode(email)
                 + SDKUserParameters.PARAMETER_PHONE + phones;
     }
+
+
+    private String getPathContribution(String idVault, String idContribution) {
+        return urlSdlupdateContribution + SDKUserParameters.PARAMETER_VAULT
+                + encode(idVault) + SDKUserParameters.PARAMETER_CONTRIBUTION
+                + encode(idContribution);
+    }
+
 
     /**
      * Method for encode
