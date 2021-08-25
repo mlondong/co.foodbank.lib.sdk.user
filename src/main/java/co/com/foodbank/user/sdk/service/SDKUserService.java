@@ -31,6 +31,8 @@ import co.com.foodbank.user.sdk.util.UrlUser;
 import co.com.foodbank.vault.dto.VaultDTO;
 
 /**
+ * SDK for handle request through api rest User.
+ * 
  * @author mauricio.londono@gmail.com co.com.foodbank.user.sdk.service
  *         28/06/2021
  */
