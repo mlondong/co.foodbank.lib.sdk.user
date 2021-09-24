@@ -278,6 +278,7 @@ public class SDKUserService implements ISDKUser {
                     urlUser.toUpdateContribution(idVault, idContribution),
                     HttpMethod.PUT, entity, String.class).getBody();
 
+
             return objectMapper.readValue(response,
                     new TypeReference<ResponseProviderData>() {});
 

@@ -8,6 +8,7 @@ public final class SDKUserParameters {
     public static final String _SUFIX_FIND_BYSUCURSAL = "/findBySucursal/";
     public static final String _SUFIX_UPDATE_VAULT_PROV =
             "/updateVaultInProvider/";
+
     public static final String _SUFIX_UPDATE_CONTRIBUTION =
             "/updateContribution/";
     public static final String _SUFIX_FIND_BY_USER = "/findByUser?";
@@ -19,8 +20,10 @@ public final class SDKUserParameters {
             _PREFIX + _SUFIX_FIND_BYSUCURSAL;
     public static final String PATH_UPDATE_VAULT_PROV =
             _PREFIX + _SUFIX_UPDATE_VAULT_PROV;
+
     public static final String PATH_UPDATE_CONTRIBUTION =
             _PREFIX + _SUFIX_UPDATE_CONTRIBUTION;
+
     public static final String PATH_FIND_BY_USER =
             _PREFIX + _SUFIX_FIND_BY_USER;
     public static final String PATH_FIND_VOLUNTEER =
